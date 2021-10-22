@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>machine test</title>
+  </head>
+  <style>
+    body {
+      background-color: ivory;
+    }
+    #canvas {
+      border: 1px solid red;
+    }
+  </style>
+
+  <body>
+    <h4>Simple Paint App</h4>
+    <canvas id="canvas" width="500" height="150"></canvas>
+    <button onClick="erase()">clear</button>
+  </body>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.fillStyle = "#FF0000";
+
+    var canvasOffset = canvas.getBoundingClientRect();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+
+    var isDown = false;
+
+    var startX;
+    var startY;
+
+    function handleMouseDown(e) {
+      console.log("handleMouseDown");
+      console.log(e);
+      e.preventDefault();
+      e.stopPropagation();
+
+      startX = parseInt(e.clientX - offsetX);
+      startY = parseInt(e.clientY - offsetY);
+
+      isDown = true;
+    }
+
+    function handleMouseUp(e) {
+      console.log("handleMouseUp");
+      console.log(e);
+      e.preventDefault();
+      e.stopPropagation();
+
+      isDown = false;
+    }
+
+    function handleMouseOut(e) {
+      console.log("handleMouseOut");
+      console.log(e);
+      e.preventDefault();
+      e.stopPropagation();
+
+      isDown = false;
+    }
+
+    function handleMouseMove(e) {
+      console.log("handleMouseMove");
+      console.log(e);
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!isDown) {
+        return;
+      }
+
+      mouseX = parseInt(e.clientX - offsetX);
+      mouseY = parseInt(e.clientY - offsetY);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      //   console.log("hello");
+      var width = mouseX - startX;
+      var height = mouseY - startY;
+
+      ctx.strokeRect(startX, startY, width, height);
+      x1 = startX;
+      y1 = startY;
+      x2 = width;
+      y2 = height;
+    }
+
+    document
+      .getElementById("canvas")
+      .addEventListener("mousedown", function (e) {
+        handleMouseDown(e);
+      });
+    document
+      .getElementById("canvas")
+      .addEventListener("mousemove", function (e) {
+        handleMouseMove(e);
+      });
+    document.getElementById("canvas").addEventListener("mouseup", function (e) {
+      handleMouseUp(e);
+    });
+    document
+      .getElementById("canvas")
+      .addEventListener("mouseout", function (e) {
+        handleMouseOut(e);
+      });
+
+    function erase() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  </script>
+</html>
